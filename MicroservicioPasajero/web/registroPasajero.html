@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pasajero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+            color: #2d3748;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        input:focus + label {
+            color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-registrar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-registrar:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-cancelar {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registrar pasajero</h1>
+        <form id="formPasajero">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cedula">Cedula</label>
+                <input type="text" id="cedula" name="cedula" required>
+            </div>
+
+            <div class="form-group">
+                <label for="celular">Celular</label>
+                <input type="tel" id="celular" name="celular" required>
+            </div>
+
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-registrar"><span>Registrarse</span></button>
+                <button type="button" class="btn-cancelar" onclick="cancelar()"><span>Cancelar</span></button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('formPasajero').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const datos = {
+                nombre: document.getElementById('nombre').value,
+                correo: document.getElementById('correo').value,
+                cedula: document.getElementById('cedula').value,
+                celular: document.getElementById('celular').value,
+                contrasena: document.getElementById('contrasena').value
+            };
+            
+            console.log('Datos del pasajero:', datos);
+            alert('Pasajero registrado exitosamente!');
+            this.reset();
+        });
+
+        function cancelar() {
+            if (confirm('¿Está seguro que desea cancelar el registro?')) {
+                document.getElementById('formPasajero').reset();
+            }
+        }
+    </script>
+</body>
+</html>
