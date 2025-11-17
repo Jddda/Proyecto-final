@@ -8,11 +8,15 @@ package DAO;
  *
  * @author amart
  */
-public class FabricaDAOPasajero {
-    public PasajeroDAO crearResenaDao(String tipo) {
-        if(tipo.equals("POSTGRE"))
+public class FabricaDAOPasajero extends FabricaDAO {
+
+    @Override
+    public PasajeroDAO crearPasajeroDAO(String tipo) {
+
+        if ("POSTGRE".equalsIgnoreCase(tipo)) {
             return new PasajeroDAOPostgre();
-        else
-            return new ResenaDAOMongo();
+        }
+
+        return null;
     }
 }

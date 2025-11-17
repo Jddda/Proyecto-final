@@ -11,7 +11,7 @@ import java.util.List;
  * @author amart
  */
 public class PasajeroServicio {
-     private PasajeroRepositorio pr;
+     /*private PasajeroRepositorio pr;
 
     public PasajeroServicio() {
         pr = new PasajeroRepositorio();
@@ -27,5 +27,5 @@ public class PasajeroServicio {
 
     public List<Pasajero> listarPasajeros() {
         return pr.findAllPasajeros();
-    }
+    }*/
 }

@@ -15,5 +15,5 @@ public interface PasajeroDAO {
      int insertarPasajero(PasajeroDTO ob);
      PasajeroDTO consultarPasajero(int id);
      List<PasajeroDTO> listarTodos();
-     void borrar(int id);
+     public int borrar(int id);
 }

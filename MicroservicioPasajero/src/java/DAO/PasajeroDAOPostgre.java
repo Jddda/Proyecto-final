@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author amart
  */
-public class PasajeroDAOPostgre {
+public class PasajeroDAOPostgre implements PasajeroDAO{
      private static final String URL = "jdbc:postgresql://localhost:5432/Prueba";
     private static final String USER = "postgres";
     private static final String PASSWORD = "123456";
@@ -31,7 +31,8 @@ public class PasajeroDAOPostgre {
     // ---------------------------------------------------------
     // INSERTAR
     // ---------------------------------------------------------
-    public int insertar(PasajeroDTO p) {
+     @Override
+    public int insertarPasajero(PasajeroDTO p) {
         String sql = "INSERT INTO pasajero (id_pasajero, nombre, apellido, correo, identificacion, telefono) "
                    + "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -57,7 +58,8 @@ public class PasajeroDAOPostgre {
     // ---------------------------------------------------------
     // CONSULTAR POR ID
     // ---------------------------------------------------------
-    public PasajeroDTO consultar(int id) {
+     @Override
+    public PasajeroDTO consultarPasajero(int id) {
         String sql = "SELECT * FROM pasajero WHERE id_pasajero = ?";
         PasajeroDTO p = null;
 
@@ -89,6 +91,7 @@ public class PasajeroDAOPostgre {
     // ---------------------------------------------------------
     // LISTAR TODOS
     // ---------------------------------------------------------
+     @Override
     public List<PasajeroDTO> listarTodos() {
         String sql = "SELECT * FROM pasajero";
         List<PasajeroDTO> lista = new ArrayList<>();
@@ -147,6 +150,7 @@ public class PasajeroDAOPostgre {
     // ---------------------------------------------------------
     // BORRAR
     // ---------------------------------------------------------
+     @Override
     public int borrar(int id) {
         String sql = "DELETE FROM pasajero WHERE id_pasajero = ?";
 
@@ -163,5 +167,7 @@ public class PasajeroDAOPostgre {
 
         return 0;
     }
+
+    
 
 }

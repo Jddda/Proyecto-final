@@ -9,6 +9,6 @@ package DAO;
  * @author amart
  */
 public abstract class FabricaDAO {
-    public abstract PasajeroDAOPostgre crearPasajeroDAO(String tipo);
+    public abstract PasajeroDAO crearPasajeroDAO(String tipo);
     
 }

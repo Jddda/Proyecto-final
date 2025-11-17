@@ -4,7 +4,9 @@
  */
 package Presentacion;
 
+import DAO.FabricaDAO;
 import DAO.FabricaDAOPasajero;
+import DAO.PasajeroDAOPostgre;
 import Modelo.PasajeroDTO;
 import PasajeroServicio.PasajeroServicio;
 import java.io.IOException;
@@ -37,27 +39,27 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     if ("registrar".equalsIgnoreCase(accion)) {
 
         int idPasajero = Integer.parseInt(request.getParameter("idPasajero"));
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String correo = request.getParameter("correo");
-        String identificacion = request.getParameter("identificacion");
-        String telefono = request.getParameter("telefono");
+            String nombre = request.getParameter("nombre");
+            String apellido = request.getParameter("apellido");
+            String correo = request.getParameter("correo");
+            String identificacion = request.getParameter("identificacion");
+            String telefono = request.getParameter("telefono");
 
         // Crear DTO
         PasajeroDTO pasajero = new PasajeroDTO(
-                idPasajero,
-                nombre,
-                apellido,
-                correo,
-                identificacion,
-                telefono
-        );
+                    idPasajero,
+                    nombre,
+                    apellido,
+                    correo,
+                    identificacion,
+                    telefono
+            );
 
         // Obtener DAO desde la fábrica
-        FabricaDao fabrica = new FabricaDAOPasajero();
-        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDao("POSTGRE");
+        FabricaDAO fabrica = new FabricaDAOPasajero();
+        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDAO("POSTGRE");
 
-        int res = dao.insertar(pasajero);
+        int res = dao.insertarPasajero(pasajero);
 
         if (res > 0) {
             request.setAttribute("mensaje", "Pasajero registrado correctamente.");
@@ -73,8 +75,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     // ---------------------------------------------------------
     else if ("listar".equalsIgnoreCase(accion)) {
 
-        FabricaDao fabrica = new FabricaDAOPasajero();
-        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDao("POSTGRE");
+        FabricaDAO fabrica = new FabricaDAOPasajero();
+        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDAO("POSTGRE");
 
         List<PasajeroDTO> lista = dao.listarTodos();
 
