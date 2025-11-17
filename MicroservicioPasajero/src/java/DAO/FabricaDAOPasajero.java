@@ -15,8 +15,10 @@ public class FabricaDAOPasajero extends FabricaDAO {
 
         if ("POSTGRE".equalsIgnoreCase(tipo)) {
             return new PasajeroDAOPostgre();
+        } else {
+            return new PasajeroDAOMongo();
         }
 
-        return null;
+        
     }
 }

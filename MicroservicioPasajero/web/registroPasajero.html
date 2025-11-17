@@ -162,7 +162,7 @@
     <div class="container">
     <h1>Registrar pasajero</h1>
 
-    <form action="PasajeroControl" method="POST" id="formPasajero">
+    <form action="PasajeroControl" method="POST" id="formPasajero" >
 
         <input type="hidden" name="accion" value="registrar">
         <input type="hidden" name="idPasajero" value="0">
@@ -206,10 +206,11 @@
             
             const datos = {
                 nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
                 correo: document.getElementById('correo').value,
-                cedula: document.getElementById('cedula').value,
-                celular: document.getElementById('celular').value,
-                contrasena: document.getElementById('contrasena').value
+                identificacion: document.getElementById('identificacion').value,
+                telefono: document.getElementById('telefono').value
+                
             };
             
             console.log('Datos del pasajero:', datos);
