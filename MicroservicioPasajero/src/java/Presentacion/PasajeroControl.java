@@ -4,6 +4,9 @@
  */
 package Presentacion;
 
+import DAO.FabricaDAOPasajero;
+import Modelo.PasajeroDTO;
+import PasajeroServicio.PasajeroServicio;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -20,72 +23,77 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PasajeroControl", urlPatterns = {"/PasajeroControl"})
 public class PasajeroControl extends HttpServlet {
 
-   private PasajeroServicio ps = new PasajeroServicio();
+    private PasajeroServicio ps = new PasajeroServicio();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
 
-        String cual = request.getParameter("ContPasajero");
+    String accion = request.getParameter("accion");
 
-        if (cual.equals("registrar")) {
-            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-            String metodoPagoPref = request.getParameter("metodoPagoPref");
+    // ---------------------------------------------------------
+    // REGISTRAR PASAJERO
+    // ---------------------------------------------------------
+    if ("registrar".equalsIgnoreCase(accion)) {
 
-            Pasajero pasajero = new Pasajero(idUsuario, metodoPagoPref);
-            ps.registrarPasajero(pasajero);
+        int idPasajero = Integer.parseInt(request.getParameter("idPasajero"));
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String correo = request.getParameter("correo");
+        String identificacion = request.getParameter("identificacion");
+        String telefono = request.getParameter("telefono");
 
-            request.setAttribute("mensaje", "El pasajero ha sido registrado exitosamente.");
-            request.getRequestDispatcher("/FormPasajero.jsp").forward(request, response);
+        // Crear DTO
+        PasajeroDTO pasajero = new PasajeroDTO(
+                idPasajero,
+                nombre,
+                apellido,
+                correo,
+                identificacion,
+                telefono
+        );
 
+        // Obtener DAO desde la fábrica
+        FabricaDao fabrica = new FabricaDAOPasajero();
+        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDao("POSTGRE");
+
+        int res = dao.insertar(pasajero);
+
+        if (res > 0) {
+            request.setAttribute("mensaje", "Pasajero registrado correctamente.");
         } else {
-            List<Pasajero> lista = ps.listarPasajeros();
-            String lis = "<br>";
-            for (Pasajero p : lista) {
-                lis += "Pasajero ID Usuario: " + p.getIdUsuario() + " - Método: " + p.getMetodoPagoPref() + "<br>";
-            }
-
-            request.setAttribute("mensaje", "Pasajeros registrados: " + lis);
-            request.getRequestDispatcher("/ListarTodosPasajeros.jsp").forward(request, response);
+            request.setAttribute("mensaje", "ERROR: No se pudo registrar al pasajero.");
         }
+
+        request.getRequestDispatcher("/FormPasajero.jsp").forward(request, response);
     }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+    // ---------------------------------------------------------
+    // LISTAR TODOS LOS PASAJEROS
+    // ---------------------------------------------------------
+    else if ("listar".equalsIgnoreCase(accion)) {
+
+        FabricaDao fabrica = new FabricaDAOPasajero();
+        PasajeroDAOPostgre dao = (PasajeroDAOPostgre) fabrica.crearPasajeroDao("POSTGRE");
+
+        List<PasajeroDTO> lista = dao.listarTodos();
+
+        request.setAttribute("listaPasajeros", lista);
+        request.getRequestDispatcher("/ListarTodosPasajeros.jsp").forward(request, response);
+    }
+
+    // ---------------------------------------------------------
+    // ACCIÓN DESCONOCIDA
+    // ---------------------------------------------------------
+    else {
+        response.getWriter().write("Acción no válida.");
+    }
+}
+
+    // GET para pruebas
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doPost(request, response);
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
