@@ -6,6 +6,7 @@ package Presentacion;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,32 +20,35 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "PasajeroControl", urlPatterns = {"/PasajeroControl"})
 public class PasajeroControl extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   private PasajeroServicio ps = new PasajeroServicio();
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PasajeroControl</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PasajeroControl at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+        String cual = request.getParameter("ContPasajero");
+
+        if (cual.equals("registrar")) {
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+            String metodoPagoPref = request.getParameter("metodoPagoPref");
+
+            Pasajero pasajero = new Pasajero(idUsuario, metodoPagoPref);
+            ps.registrarPasajero(pasajero);
+
+            request.setAttribute("mensaje", "El pasajero ha sido registrado exitosamente.");
+            request.getRequestDispatcher("/FormPasajero.jsp").forward(request, response);
+
+        } else {
+            List<Pasajero> lista = ps.listarPasajeros();
+            String lis = "<br>";
+            for (Pasajero p : lista) {
+                lis += "Pasajero ID Usuario: " + p.getIdUsuario() + " - Método: " + p.getMetodoPagoPref() + "<br>";
+            }
+
+            request.setAttribute("mensaje", "Pasajeros registrados: " + lis);
+            request.getRequestDispatcher("/ListarTodosPasajeros.jsp").forward(request, response);
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
