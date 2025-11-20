@@ -16,7 +16,7 @@ import java.util.List;
  * @author amart
  */
 public class PasajeroDAOPostgre implements PasajeroDAO{
-     private static final String URL = "jdbc:postgresql://localhost:5432/Prueba";
+    private static final String URL = "jdbc:postgresql://localhost:5432/Prueba";
     private static final String USER = "postgres";
     private static final String PASSWORD = "123456";
 
