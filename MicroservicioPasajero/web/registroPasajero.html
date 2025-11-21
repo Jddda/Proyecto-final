@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Pasajero</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,19 +24,13 @@
             padding: 40px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: slideIn 0.5s ease-out;
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -54,10 +44,7 @@
             font-weight: 700;
         }
 
-        .form-group {
-            margin-bottom: 24px;
-            position: relative;
-        }
+        .form-group { margin-bottom: 24px; }
 
         label {
             display: block;
@@ -65,7 +52,6 @@
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 8px;
-            transition: color 0.3s;
         }
 
         input {
@@ -83,11 +69,7 @@
             outline: none;
             border-color: #667eea;
             background-color: white;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        input:focus + label {
-            color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
         }
 
         .button-group {
@@ -104,125 +86,62 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        button:active {
-            transform: scale(0.98);
+            transition: 0.3s;
         }
 
         .btn-registrar {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-registrar:hover {
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-            transform: translateY(-2px);
         }
 
         .btn-cancelar {
             background-color: #e2e8f0;
             color: #4a5568;
         }
-
-        .btn-cancelar:hover {
-            background-color: #cbd5e0;
-            transform: translateY(-2px);
-        }
-
-        button span {
-            position: relative;
-            z-index: 1;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-    <h1>Registrar pasajero</h1>
+        <h1>Registrar pasajero</h1>
 
-    <form action="PasajeroControl" method="POST" id="formPasajero" >
+        <!-- ENVÍA AL SERVLET -->
+        <form action="PasajeroControl" method="POST" id="formPasajero">
 
-        <input type="hidden" name="accion" value="registrar">
-        <input type="hidden" name="idPasajero" value="0">
+            <input type="hidden" name="accion" value="registrar">
 
-        <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
-        </div>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
 
-        <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" name="apellido" required>
-        </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
+            </div>
 
-        <div class="form-group">
-            <label for="correo">Correo</label>
-            <input type="email" id="correo" name="correo" required>
-        </div>
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
 
-        <div class="form-group">
-            <label for="identificacion">Cédula</label>
-            <input type="text" id="identificacion" name="identificacion" required>
-        </div>
+            <div class="form-group">
+                <label for="identificacion">Cédula</label>
+                <input type="text" id="identificacion" name="identificacion" required>
+            </div>
 
-        <div class="form-group">
-            <label for="telefono">Celular</label>
-            <input type="tel" id="telefono" name="telefono" required>
-        </div>
+            <div class="form-group">
+                <label for="telefono">Celular</label>
+                <input type="tel" id="telefono" name="telefono" required>
+            </div>
 
-        <div class="button-group">
-            <button type="submit" class="btn-registrar"><span>Registrarse</span></button>
-            <button type="button" class="btn-cancelar" onclick="cancelar()"><span>Cancelar</span></button>
-        </div>
+            <div class="button-group">
+                <button type="submit" class="btn-registrar"><span>Registrarse</span></button>
+                <button type="button" class="btn-cancelar" onclick="document.getElementById('formPasajero').reset();">
+                    <span>Cancelar</span>
+                </button>
+            </div>
 
-    </form>
-</div>
-
-    <script>
-        document.getElementById('formPasajero').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const datos = {
-                nombre: document.getElementById('nombre').value,
-                apellido: document.getElementById('apellido').value,
-                correo: document.getElementById('correo').value,
-                identificacion: document.getElementById('identificacion').value,
-                telefono: document.getElementById('telefono').value
-                
-            };
-            
-            console.log('Datos del pasajero:', datos);
-            alert('Pasajero registrado exitosamente!');
-            this.reset();
-        });
-
-        function cancelar() {
-            if (confirm('¿Está seguro que desea cancelar el registro?')) {
-                document.getElementById('formPasajero').reset();
-            }
-        }
-    </script>
+        </form>
+    </div>
 </body>
 </html>
