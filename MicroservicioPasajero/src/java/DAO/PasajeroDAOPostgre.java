@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
+
 import Modelo.PasajeroDTO;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,11 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-/**
- *
- * @author amart
- */
-public class PasajeroDAOPostgre implements PasajeroDAO{
+
+public class PasajeroDAOPostgre implements PasajeroDAO {
+
     private static final String URL = "jdbc:postgresql://localhost:5432/BaseSisMovilidad";
     private static final String USER = "postgres";
     private static final String PASSWORD = "123456";
@@ -29,22 +28,22 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
     }
 
     // ---------------------------------------------------------
-    // INSERTAR
+    // INSERTAR PASAJERO
     // ---------------------------------------------------------
-     @Override
+    @Override
     public int insertarPasajero(PasajeroDTO p) {
-        String sql = "INSERT INTO pasajero (id_pasajero, nombre, apellido, correo, identificacion, telefono) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        String sql = "INSERT INTO pasajero (nombre, apellido, correo, identificacion, telefono) "
+                   + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, p.getIdPasajero());
-            ps.setString(2, p.getNombre());
-            ps.setString(3, p.getApellido());
-            ps.setString(4, p.getCorreo());
-            ps.setString(5, p.getIdentificacion());
-            ps.setString(6, p.getTelefono());
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getApellido());
+            ps.setString(3, p.getCorreo());
+            ps.setInt(4, Integer.parseInt(p.getIdentificacion()));
+            ps.setString(5, p.getTelefono());
 
             return ps.executeUpdate();
 
@@ -56,10 +55,11 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
     }
 
     // ---------------------------------------------------------
-    // CONSULTAR POR ID
+    // CONSULTAR PASAJERO
     // ---------------------------------------------------------
-     @Override
+    @Override
     public PasajeroDTO consultarPasajero(int id) {
+
         String sql = "SELECT * FROM pasajero WHERE id_pasajero = ?";
         PasajeroDTO p = null;
 
@@ -75,7 +75,7 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("correo"),
-                        rs.getString("identificacion"),
+                        String.valueOf(rs.getInt("identificacion")),
                         rs.getString("telefono")
                 );
             }
@@ -91,8 +91,9 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
     // ---------------------------------------------------------
     // LISTAR TODOS
     // ---------------------------------------------------------
-     @Override
+    @Override
     public List<PasajeroDTO> listarTodos() {
+
         String sql = "SELECT * FROM pasajero";
         List<PasajeroDTO> lista = new ArrayList<>();
 
@@ -101,14 +102,16 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+
                 PasajeroDTO p = new PasajeroDTO(
                         rs.getInt("id_pasajero"),
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("correo"),
-                        rs.getString("identificacion"),
+                        String.valueOf(rs.getInt("identificacion")),
                         rs.getString("telefono")
                 );
+
                 lista.add(p);
             }
 
@@ -123,7 +126,9 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
     // ---------------------------------------------------------
     // ACTUALIZAR
     // ---------------------------------------------------------
+    @Override
     public int actualizar(PasajeroDTO p) {
+
         String sql = "UPDATE pasajero SET nombre=?, apellido=?, correo=?, identificacion=?, telefono=? "
                    + "WHERE id_pasajero=?";
 
@@ -133,7 +138,7 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
             ps.setString(1, p.getNombre());
             ps.setString(2, p.getApellido());
             ps.setString(3, p.getCorreo());
-            ps.setString(4, p.getIdentificacion());
+            ps.setInt(4, Integer.parseInt(p.getIdentificacion()));
             ps.setString(5, p.getTelefono());
             ps.setInt(6, p.getIdPasajero());
 
@@ -150,7 +155,7 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
     // ---------------------------------------------------------
     // BORRAR
     // ---------------------------------------------------------
-     @Override
+    @Override
     public int borrar(int id) {
         String sql = "DELETE FROM pasajero WHERE id_pasajero = ?";
 
@@ -168,6 +173,5 @@ public class PasajeroDAOPostgre implements PasajeroDAO{
         return 0;
     }
 
-    
-
 }
+
