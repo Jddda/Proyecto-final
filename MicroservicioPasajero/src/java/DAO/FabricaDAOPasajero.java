@@ -1,24 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
-/**
- *
- * @author amart
- */
 public class FabricaDAOPasajero extends FabricaDAO {
 
     @Override
     public PasajeroDAO crearPasajeroDAO(String tipo) {
 
-        if ("POSTGRE".equalsIgnoreCase(tipo)) {
-            return new PasajeroDAOPostgre();
-        } else {
-            return new PasajeroDAOMongo();
+        if (tipo == null) {
+            throw new IllegalArgumentException("El tipo de BD no puede ser nulo");
         }
 
-        
+        switch (tipo.toUpperCase()) {
+
+            case "POSTGRE":
+                return new PasajeroDAOPostgre();
+
+            case "MONGO":
+                return new PasajeroDAOMongo();
+
+            default:
+                throw new IllegalArgumentException(
+                    "Tipo de BD no reconocido: " + tipo + 
+                    ". Opciones válidas: POSTGRE o MONGO"
+                );
+        }
     }
 }
